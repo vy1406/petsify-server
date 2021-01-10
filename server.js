@@ -1,8 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
 	require('dotenv').config();
 }
-const { Pool } = require('pg');
-
+// import { pool } from './src/db/db-connection';
 const express = require('express');
 const app = express();
 const bcrypt = require('bcrypt');
@@ -16,14 +15,6 @@ const initializePassport = require('./passport-config');
 // -----------------------------
 // START - DB
 // -----------------------------
-
-const pool = new Pool({
-	user: process.env.PG_USER,
-	host: process.env.PG_HOST,
-	database: process.env.PG_DATABASE,
-	password: process.env.PG_PASSWORD,
-	port: process.env.PG_PORT
-});
 
 const users = [
 	{
@@ -137,25 +128,25 @@ app.post('/web/login', checkNotAuthenticated, (req, res, next) => {
 });
 
 app.post('/web/register', checkNotAuthenticated, async (req, res) => {
-	try {
-		const hashedPassword = await bcrypt.hash(req.body.password, 10);
-		const userToAdd = {
-			name: req.body.name,
-			email: req.body.email,
-			hash: hashedPassword
-		};
-		console.log(userToAdd);
-		const q = `INSERT INTO users (email, hash, first_name, last_name)
-		VALUES ('${userToAdd.email}', '${userToAdd.hash}', '${userToAdd.name}', 'yel')`;
-		pool.query(q, (err, res) => {
-			console.log(err, res);
-			pool.end();
-		});
-
-		res.send(`registered.., user ${userToAdd.email} was added to db`);
-	} catch (error) {
-		res.send('some error');
-	}
+	// try {
+	// 	const hashedPassword = await bcrypt.hash(req.body.password, 10);
+	// 	const userToAdd = {
+	// 		firstName: req.body.firstName,
+	// 		lastName: req.body.lastName,
+	// 		username: req.body.username,
+	// 		email: req.body.email,
+	// 		hash: hashedPassword
+	// 	};
+	// 	const q = `INSERT INTO users (username, email, hash, first_name, last_name)
+	// 	VALUES ('${userToAdd.username}', '${userToAdd.email}', '${userToAdd.hash}', '${userToAdd.firstName}', '${userToAdd.lastName}')`;
+	// 	pool.query(q, (err, res) => {
+	// 		console.log(err, res);
+	// 		pool.end();
+	// 	});
+	// 	res.send(`registered.., user ${userToAdd.email} was added to db`);
+	// } catch (error) {
+	// 	res.send('some error');
+	// }
 });
 
 const port = process.env.PORT || 3000;
