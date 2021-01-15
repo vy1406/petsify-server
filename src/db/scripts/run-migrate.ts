@@ -6,38 +6,90 @@ const pool = require('../db-connection');
 
 const main = async () => {
 	const createUser = async (
-		username: string,
-		email: string,
 		firstName: string,
 		lastName: string,
-		password: string
+		email: string,
+		hash: string,
+		role: string
 	): Promise<void> => {
-		const q = `INSERT INTO users (username, email, hash, first_name, last_name)
-		VALUES ('${username}', '${email}', '${password}', '${firstName}', '${lastName}');`;
+		const q = `INSERT INTO users (first_name, last_name, email, hash, role)
+		VALUES ('${firstName}', '${lastName}', '${email}', '${hash}', '${role}');`;
 		await pool.query(q);
+	};
+
+	const createPetType = async (name: string): Promise<void> => {
+		const q = `INSERT INTO pet_types (name)
+		VALUES ('${name}');`;
+		await pool.query(q);
+	};
+
+	const createBreed = async (name: string): Promise<void> => {
+		const q = `INSERT INTO breeds (name)
+		VALUES ('${name}');`;
+		await pool.query(q);
+	};
+
+	const createPet = async (
+		ownerId: number,
+		petTypeId: number,
+		breedId: number | null,
+		name: string
+	): Promise<void> => {
+		const q = `INSERT INTO pets (owner_id, pet_type_id, breed_id, name)
+		VALUES (${ownerId}, ${petTypeId}, ${breedId}, '${name}');`;
+		await pool.query(q);
+	};
+
+	const loadBreeds = async () => {
+		await createBreed('chiwawa');
+		await createBreed('husky');
+		await createBreed('canadian sfinx');
+		await createBreed('britanian');
+		await createBreed('shinshila');
+		await createBreed('alexandrin');
+	};
+
+	const loadPetTypes = async () => {
+		await createPetType('dog');
+		await createPetType('cat');
+		await createPetType('parrot');
+	};
+
+	const loadPets = async () => {
+		await createPet(1, 1, 2, 'rojo');
+		await createPet(1, 3, 6, 'cherchil');
+		await createPet(2, 2, 4, 'slavik');
+		await createPet(3, 1, 1, 'mike');
 	};
 
 	const loadUsers = async () => {
 		await createUser(
-			'velisave2',
-			'velisave@gmail.com',
 			'vova',
 			'yel',
-			'$2b$10$mHZ8v109Mkh/lbG7t7PNuOMf/gAhiGYIVkXJqJCFK2uJCRfSTdM66'
-		);
-		await createUser(
-			'velisave',
 			'velisave@gmail.com',
-			'vova',
-			'yel',
-			'$2b$10$mHZ8v109Mkh/lbG7t7PNuOMf/gAhiGYIVkXJqJCFK2uJCRfSTdM66'
+			'$2b$10$mHZ8v109Mkh/lbG7t7PNuOMf/gAhiGYIVkXJqJCFK2uJCRfSTdM66',
+			'admin'
 		);
 		await createUser(
-			'soldima',
-			'soldurifi@gmail.com',
+			'nadya',
+			'mg',
+			'nadya@gmail.com',
+			'$2b$10$mHZ8v109Mkh/lbG7t7PNuOMf/gAhiGYIVkXJqJCFK2uJCRfSTdM66',
+			'secretary'
+		);
+		await createUser(
 			'dima',
 			'sol',
-			'$2b$10$mHZ8v109Mkh/lbG7t7PNuOMf/gAhiGYIVkXJqJCFK2uJCRfSTdM66'
+			'soldurifi@gmail.com',
+			'$2b$10$mHZ8v109Mkh/lbG7t7PNuOMf/gAhiGYIVkXJqJCFK2uJCRfSTdM66',
+			'client'
+		);
+		await createUser(
+			'gavrik',
+			'gavrilyuk',
+			'gavrik@gmail.com',
+			'$2b$10$mHZ8v109Mkh/lbG7t7PNuOMf/gAhiGYIVkXJqJCFK2uJCRfSTdM66',
+			'client'
 		);
 	};
 
@@ -47,6 +99,10 @@ const main = async () => {
 
 	// const migrationInstance = Migration.getInstance();
 	await loadUsers();
+	await loadPetTypes();
+	await loadBreeds();
+	await loadPets();
+
 	// const q = `INSERT INTO users (username, email, hash, first_name, last_name)
 	// VALUES ('velisave22', 'velisave@gmail.com', '$2b$10$mHZ8v109Mkh/lbG7t7PNuOMf/gAhiGYIVkXJqJCFK2uJCRfSTdM66', 'vova', 'yel');`;
 

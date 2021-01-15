@@ -8,14 +8,17 @@ const main = async () => {
 	console.log('Reset db start');
 	console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
-	const tableRoles = `DROP TABLE IF EXISTS roles CASCADE;`;
+	const tableRoles = `DROP TABLE IF EXISTS pet_types CASCADE;`;
 	await pool.query(tableRoles);
+
+	const tableBreeds = `DROP TABLE IF EXISTS breeds CASCADE;`;
+	await pool.query(tableBreeds);
 
 	const tableUsers = `DROP TABLE IF EXISTS users CASCADE;`;
 	await pool.query(tableUsers);
 
-	const tableUserRoles = `DROP TABLE IF EXISTS users_roles;`;
-	await pool.query(tableUserRoles);
+	const petsTable = `DROP TABLE IF EXISTS pets CASCADE;`;
+	await pool.query(petsTable);
 
 	console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
 	console.log('Reset db end');

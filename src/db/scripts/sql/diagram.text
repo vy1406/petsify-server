@@ -1,3 +1,5 @@
+//// -- LEVEL 1
+//// -- Tables and References
 
 Enum role_type {
   admin
@@ -11,7 +13,7 @@ Table users as U {
   last_name varchar
   email varchar unique
   hash varchar
-  role role_typ
+  role role_type
   updated_at timestamp
   created_at timestamp
 }

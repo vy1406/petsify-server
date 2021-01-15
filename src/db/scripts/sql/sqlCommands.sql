@@ -29,7 +29,7 @@ CREATE TABLE pets (
   id SERIAL PRIMARY KEY,
   owner_id INTEGER REFERENCES users(id) NOT NULL,
   pet_type_id INTEGER REFERENCES pet_types(id) NOT NULL,
-  breed_id INTEGER REFERENCES breeds(id) NOT NULL,
+  breed_id INTEGER REFERENCES breeds(id),
   name VARCHAR(32),
   created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
