@@ -15,7 +15,7 @@ const initializePassport = require('./passport-config');
 // -----------------------------
 // START - DB
 // -----------------------------
-
+// for login
 const users = [
 	{
 		id: '1606740996282',
@@ -148,6 +148,8 @@ app.post('/web/register', checkNotAuthenticated, async (req, res) => {
 	// 	res.send('some error');
 	// }
 });
+
+app.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 const port = process.env.PORT || 3000;
 

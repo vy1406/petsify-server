@@ -1,0 +1,41 @@
+
+Enum role_type {
+  admin
+  secretary
+  client 
+}
+
+Table users as U {
+  id int [pk, increment] // auto-increment
+  first_name varchar
+  last_name varchar
+  email varchar unique
+  hash varchar
+  role role_typ
+  updated_at timestamp
+  created_at timestamp
+}
+
+Table pets as p {
+  id int [pk, increment] // auto-increment
+  animal_type_id int
+  breed_id int
+  owner_id int
+  name varchar
+  updated_at timestamp
+  created_at timestamp
+}
+
+Table breeds as b {
+  id int [pk, increment]
+  name varchar
+}
+
+Table pet_type as pt {
+  id int [pk, increment]
+  name varchar
+}
+
+Ref: p.owner_id > U.id
+Ref: p.animal_type_id > pt.id
+Ref: b.id > p.breed_id
